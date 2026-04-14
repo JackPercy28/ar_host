@@ -13,7 +13,6 @@
       AFRAME.registerComponent('dynamic-face', {
         init: function () {
           if (userFaceUrl) {
-            // Add crossOrigin to prevent security errors from Cloudinary
             this.el.setAttribute('crossOrigin', 'anonymous');
             this.el.setAttribute('src', userFaceUrl);
           }
@@ -25,23 +24,13 @@
   <body style="margin: 0; overflow: hidden;">
     <a-scene mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       
-      <a-assets>
-        <a-asset-item id="floating-model" src="./FastRun.glb"></a-asset-item>
-      </a-assets>
-
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
         
         <a-plane dynamic-face position="0 0 0" height="1.25" width="1" rotation="0 0 0"></a-plane>
         
-        <a-gltf-model 
-            src="#floating-model" 
-            position="0 0 0.5" 
-            scale="0.01 0.01 0.01" 
-            rotation="0 0 0"
-            animation-mixer="clip: mixamo.com; loop: repeat;">
-        </a-gltf-model>
+        <a-box position="0 0 0.5" scale="0.5 0.5 0.5" color="red"></a-box>
 
       </a-entity>
     </a-scene>
