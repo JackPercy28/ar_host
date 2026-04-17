@@ -1,6 +1,8 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI AR Photobooth Diorama</title>
+    
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.0/dist/mindar-image-aframe.prod.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
@@ -25,6 +27,8 @@
       
       <a-assets>
         <a-asset-item id="floating-model" src="./FastRun.glb"></a-asset-item>
+        
+        <img id="ground-png" src="./ground.png" />
         <img id="tree-png" src="./tree.png" />
         <img id="tree2-png" src="./tree2.png" />
         <img id="tree3-png" src="./tree3.png" />
@@ -51,6 +55,8 @@
         <a-image src="#bush2-png" position="-0.6 -0.3 0.15" height="0.3" width="0.3" material="transparent: true; alphaTest: 0.5"></a-image>
         <a-image src="#bush2-png" position="0.35 -0.3 0.25" height="0.2" width="0.2" material="transparent: true; alphaTest: 0.5"></a-image>
 
+        <a-image src="#ground-png" position="0.2 -0.41 0.5" rotation="-90 0 0" width="1.5" height="1.5" material="transparent: true; alphaTest: 0.5"></a-image>
+        
         <a-gltf-model src="#floating-model" position="0.2 -0.4 0.5" scale="0.07 0.07 0.07" rotation="0 -45 0" animation-mixer="clip: mixamo.com.001; loop: repeat;"></a-gltf-model>
 
         <a-image src="#flowers-png" position="-0.4 -0.5 0.7" height="0.28" width="0.28" material="transparent: true; alphaTest: 0.5"></a-image>
