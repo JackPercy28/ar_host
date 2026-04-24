@@ -8,11 +8,9 @@
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
 
     <script>
-      // 1. Grab the Cloudinary image link from the URL
       const urlParams = new URLSearchParams(window.location.search);
       const userFaceUrl = urlParams.get('face');
 
-      // 2. Inject it into the center popup
       AFRAME.registerComponent('center-popup', {
         init: function () {
           if (userFaceUrl) {
@@ -28,8 +26,6 @@
     <a-scene mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <a-asset-item id="floating-model" src="./FastRun.glb"></a-asset-item>
-        
         <img id="ground-png" src="./ground.png" />
         <img id="tree-png" src="./tree.png" />
         <img id="tree2-png" src="./tree2.png" />
@@ -38,6 +34,8 @@
         <img id="bush2-png" src="./bush2.png" />
         <img id="flowers-png" src="./flowers.png" />
         <img id="cloud-png" src="./cloud.png" />
+        
+        <img id="body-png" src="./body.png" />
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -46,19 +44,19 @@
         
         <a-image src="#cloud-png" position="-0.6 0.8 -0.3" height="0.3" width="0.6" material="transparent: true; alphaTest: 0.5"></a-image>
         <a-image src="#cloud-png" position="0.5 0.9 -0.4" height="0.2" width="0.4" material="transparent: true; alphaTest: 0.5"></a-image>
-
         <a-image src="#tree-png" position="-0.7 -0.05 -0.2" height="0.7" width="0.56" material="transparent: true; alphaTest: 0.5"></a-image>
         <a-image src="#tree2-png" position="0.65 0 -0.25" height="0.8" width="0.6" material="transparent: true; alphaTest: 0.5"></a-image>
 
-        <a-image center-popup position="0 0 0.1" height="1.2" width="1.2" material="transparent: true; alphaTest: 0.5"></a-image>
+        <a-image src="#body-png" position="0 -0.1 0.1" height="0.8" width="0.6" material="transparent: true; alphaTest: 0.5"></a-image>
 
+        <a-image center-popup position="0 0.45 0.12" height="0.5" width="0.5" material="transparent: true; alphaTest: 0.5"></a-image>
+        
         <a-image src="#tree3-png" position="-0.4 -0.1 0.1" height="0.6" width="0.5" material="transparent: true; alphaTest: 0.5"></a-image>
         <a-image src="#bush-png" position="0.6 -0.22 0.2" height="0.35" width="0.35" material="transparent: true; alphaTest: 0.5"></a-image>
         <a-image src="#bush2-png" position="-0.6 -0.25 0.4" height="0.3" width="0.3" material="transparent: true; alphaTest: 0.5"></a-image>
         <a-image src="#bush2-png" position="0.35 -0.3 0.25" height="0.2" width="0.2" material="transparent: true; alphaTest: 0.5"></a-image>
 
         <a-image src="#ground-png" position="0.2 -0.4 0.5" rotation="-90 0 0" width="1.8" height="1.8" material="transparent: true; alphaTest: 0.5"></a-image>
-        <a-gltf-model src="#floating-model" position="0.2 -0.4 0.5" scale="0.055 0.055 0.055" rotation="0 -45 0" animation-mixer="clip: mixamo.com.001; loop: repeat;"></a-gltf-model>
 
         <a-image src="#flowers-png" position="-0.4 -0.26 0.7" height="0.28" width="0.28" material="transparent: true; alphaTest: 0.5"></a-image>
         <a-image src="#flowers-png" position="0.5 -0.3 0.6" height="0.2" width="0.2" material="transparent: true; alphaTest: 0.5"></a-image>
