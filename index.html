@@ -21,28 +21,50 @@
         }
       });
 
-      // 2. THE NEW SMART "FLY-IN" ANIMATION
-      AFRAME.registerComponent('fly-in', {
+      // 2. NEW: "SCALE-IN" ANIMATION (for Backdrop and Ground)
+      // Staggers and scales an item up from nothing.
+      AFRAME.registerComponent('scale-in', {
         schema: {
-          delay: { type: 'number', default: 0 } // Allows us to stagger the animations
+          delay: { type: 'number', default: 0 }
         },
         init: function () {
-          // Save the exact final position you designed
-          this.basePos = { ...this.el.getAttribute('position') };
+          // Save the full intended scale
+          this.baseScale = { ...this.el.getAttribute('scale') };
           
-          // Wait for the AR camera to find the image target
           const target = this.el.closest('[mindar-image-target]');
           if (target) {
             target.addEventListener('targetFound', () => {
-              // Drop the item 2 meters down...
-              const startY = this.basePos.y - 2;
-              
-              // ...and fire it up into place with a bouncy elastic easing!
+              // Animate scale from small to full size with bouncy ease
               this.el.setAttribute('animation', {
-                property: 'position',
-                from: `${this.basePos.x} ${startY} ${this.basePos.z}`,
-                to: `${this.basePos.x} ${this.basePos.y} ${this.basePos.z}`,
-                dur: 1500, // 1.5 seconds long
+                property: 'scale',
+                from: `0.001 0.001 0.001`,
+                to: `${this.baseScale.x} ${this.baseScale.y} ${this.baseScale.z}`,
+                dur: 1500,
+                easing: 'easeOutElastic',
+                delay: this.data.delay
+              });
+            });
+          }
+        }
+      });
+
+      // 3. NEW: "POP-UP" ANIMATION (for Characters and Furniture)
+      // Classic pop-up book effect where vertical items lie flat and rotate upright.
+      // This works by animating the parent container's X rotation.
+      AFRAME.registerComponent('pop-up', {
+        schema: {
+          delay: { type: 'number', default: 0 }
+        },
+        init: function () {
+          const target = this.el.closest('[mindar-image-target]');
+          if (target) {
+            target.addEventListener('targetFound', () => {
+              // Animate rotation from lying flat to standing upright with bouncy ease
+              this.el.setAttribute('animation', {
+                property: 'rotation',
+                from: `-90 0 0`,
+                to: `0 0 0`,
+                dur: 1500,
                 easing: 'easeOutElastic',
                 delay: this.data.delay
               });
@@ -62,37 +84,33 @@
         <img id="booth-png" src="./Booth.png" />
         <img id="stand-png" src="./Stand.png" />
         <img id="robot-png" src="./Robot.png" />
-        
-        <img id="particle-png" src="./Particle.png" />
-      </a-assets>
+        </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
         
-        <a-image fly-in="delay: 0" src="#backdrop-png" position="0 0.2 -0.5" height="2" width="2.5" material="transparent: true; alphaTest: 0.5"></a-image>
-        <a-image fly-in="delay: 100" src="#ground-png" position="0 -0.8 0.5" rotation="-90 0 0" height="2" width="2.5" material="transparent: true; alphaTest: 0.5"></a-image>
-
-        <a-image fly-in="delay: 300" src="#booth-png" position="0 -0.2 -0.3" height="1.2" width="1.5" material="transparent: true; alphaTest: 0.5"></a-image>
-
-        <a-image fly-in="delay: 450" src="#stand-png" position="0 -0.5 -0.1" height="0.6" width="0.8" material="transparent: true; alphaTest: 0.5"></a-image>
-
-        <a-image fly-in="delay: 600" center-popup position="0 -0.1 0.1" height="1.4" width="1.0" material="transparent: true; alphaTest: 0.5"></a-image>
+        <a-image scale-in="delay: 0" src="#backdrop-png" position="0 0.2 -0.5" height="2" width="2.5" material="transparent: true; alphaTest: 0.5"></a-image>
         
-        <a-image fly-in="delay: 750" src="#robot-png" position="-0.4 -0.3 0.3" height="1.0" width="0.8" material="transparent: true; alphaTest: 0.5"></a-image>
+        <a-image scale-in="delay: 200" src="#ground-png" position="0 -0.8 0.5" rotation="-90 0 0" height="2" width="2.5" material="transparent: true; alphaTest: 0.5"></a-image>
 
-        <a-image fly-in="delay: 900" src="#particle-png" position="-0.6 0.7 -0.3" height="0.1" width="0.1" material="transparent: true; alphaTest: 0.5"></a-image>
-        <a-image fly-in="delay: 950" src="#particle-png" position="0.5 0.8 -0.2" height="0.08" width="0.08" material="transparent: true; alphaTest: 0.5"></a-image>
-        <a-image fly-in="delay: 920" src="#particle-png" position="0.7 0.2 -0.1" height="0.12" width="0.12" material="transparent: true; alphaTest: 0.5"></a-image>
-        
-        <a-image fly-in="delay: 1000" src="#particle-png" position="-0.8 0.1 0.1" height="0.15" width="0.15" material="transparent: true; alphaTest: 0.5"></a-image>
-        <a-image fly-in="delay: 1050" src="#particle-png" position="0.45 -0.1 0.2" height="0.1" width="0.1" material="transparent: true; alphaTest: 0.5"></a-image>
+        <a-entity pop-up="delay: 400" position="0 -0.8 -0.3">
+          <a-image src="#booth-png" position="0 0.6 0" height="1.2" width="1.5" material="transparent: true; alphaTest: 0.5"></a-image>
+        </a-entity>
 
-        <a-image fly-in="delay: 1100" src="#particle-png" position="-0.3 0.9 0.5" height="0.25" width="0.25" material="transparent: true; alphaTest: 0.5"></a-image>
-        <a-image fly-in="delay: 1150" src="#particle-png" position="0.6 -0.3 0.6" height="0.2" width="0.2" material="transparent: true; alphaTest: 0.5"></a-image>
-        <a-image fly-in="delay: 1200" src="#particle-png" position="-0.1 -0.1 0.7" height="0.3" width="0.3" material="transparent: true; alphaTest: 0.5"></a-image>
+        <a-entity pop-up="delay: 600" position="0 -0.8 -0.1">
+          <a-image src="#stand-png" position="0 0.3 0" height="0.6" width="0.8" material="transparent: true; alphaTest: 0.5"></a-image>
+        </a-entity>
 
-      </a-entity>
+        <a-entity pop-up="delay: 800" position="-0.4 -0.8 0.3">
+          <a-image src="#robot-png" position="0 0.5 0" height="1.0" width="0.8" material="transparent: true; alphaTest: 0.5"></a-image>
+        </a-entity>
+
+        <a-entity pop-up="delay: 1000" position="0 -0.8 0.1">
+          <a-image center-popup position="0 0.7 0" height="1.4" width="1.0" material="transparent: true; alphaTest: 0.5"></a-image>
+        </a-entity>
+
+        </a-entity>
     </a-scene>
   </body>
 </html>
