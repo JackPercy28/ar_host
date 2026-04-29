@@ -31,7 +31,7 @@
                 property: 'scale',
                 from: `0.001 0.001 0.001`,
                 to: `${this.baseScale.x} ${this.baseScale.y} ${this.baseScale.z}`,
-                dur: 1500,
+                dur: 1000,
                 easing: 'easeOutElastic',
                 delay: this.data.delay
               });
@@ -50,7 +50,7 @@
                 property: 'rotation',
                 from: `-90 0 0`,
                 to: `0 0 0`,
-                dur: 1500,
+                dur: 1000,
                 easing: 'easeOutElastic',
                 delay: this.data.delay
               });
@@ -76,24 +76,23 @@
 
       <a-entity mindar-image-target="targetIndex: 0">
         
-        <a-image scale-in="delay: 0" src="#backdrop-png" position="0 0.1 -0.5" height="1.8" width="1.8" material="transparent: true; alphaTest: 0.5"></a-image>
-        
-        <a-image scale-in="delay: 400" src="#ground-png" position="0 -0.8 0.4" rotation="-90 0 0" height="1.8" width="1.8" material="transparent: true; alphaTest: 0.5"></a-image>
+        <a-image scale-in="delay: 0" src="#backdrop-png" position="0 0 -0.3" height="1.2" width="1.2" material="transparent: true; alphaTest: 0.5"></a-image>
+        <a-image scale-in="delay: 150" src="#ground-png" position="0 -0.6 0.3" rotation="-90 0 0" height="1.2" width="1.2" material="transparent: true; alphaTest: 0.5"></a-image>
 
-        <a-entity pop-up="delay: 1000" position="0 -0.8 -0.2">
-          <a-image src="#booth-png" position="0 0.6 0" height="1.7" width="2.2" material="transparent: true; alphaTest: 0.5"></a-image>
+        <a-entity pop-up="delay: 400" position="0 -0.6 -0.15">
+          <a-image src="#booth-png" position="0 0.4 0" height="1.2" width="1.5" material="transparent: true; alphaTest: 0.5"></a-image>
         </a-entity>
 
-        <a-entity pop-up="delay: 1800" position="0 -0.8 0.2">
-          <a-image src="#stand-png" position="0 0.3 0" height="1" width="1.5" material="transparent: true; alphaTest: 0.5"></a-image>
+        <a-entity pop-up="delay: 650" position="0 -0.6 0.1">
+          <a-image src="#stand-png" position="0 0.2 0" height="0.7" width="1" material="transparent: true; alphaTest: 0.5"></a-image>
         </a-entity>
 
-        <a-entity pop-up="delay: 2600" position="-0.6 -0.8 0.6">
-          <a-image src="#robot-png" position="0 0.5 0" height="1.0" width="1" material="transparent: true; alphaTest: 0.5"></a-image>
+        <a-entity pop-up="delay: 900" position="-0.35 -0.6 0.35">
+          <a-image src="#robot-png" position="0 0.35 0" height="0.7" width="0.7" material="transparent: true; alphaTest: 0.5"></a-image>
         </a-entity>
 
-        <a-entity pop-up="delay: 3400" position="0.3 -0.8 0.8">
-          <a-image center-popup position="0 0.7 0" height="1" width="0.8" material="transparent: true; alphaTest: 0.5"></a-image>
+        <a-entity pop-up="delay: 1150" position="0.25 -0.6 0.5">
+          <a-image center-popup position="0 0.5 0" height="0.7" width="0.55" material="transparent: true; alphaTest: 0.5"></a-image>
         </a-entity>
 
       </a-entity>
