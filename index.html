@@ -1,223 +1,142 @@
 <html>
-
   <head>
-
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>AI AR Diorama Centerpiece</title>
-
     
-
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.0/dist/mindar-image-aframe.prod.js"></script>
-
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
 
-
-
     <script>
-
       const urlParams = new URLSearchParams(window.location.search);
-
       const userFaceUrl = urlParams.get('face');
 
-
-
       // 1. The Cloudinary Injector
-
       AFRAME.registerComponent('center-popup', {
-
         init: function () {
-
           if (userFaceUrl) {
-
             this.el.setAttribute('crossOrigin', 'anonymous');
-
             this.el.setAttribute('src', userFaceUrl);
-
           }
-
         }
-
       });
 
-
-
-      // 2. "SCALE-IN" ANIMATION (for Background and Ground)
-
+      // 2. "SCALE-IN" ANIMATION (Updated to Replay)
       AFRAME.registerComponent('scale-in', {
-
         schema: {
-
           delay: { type: 'number', default: 0 }
-
         },
-
         init: function () {
-
           this.baseScale = { ...this.el.getAttribute('scale') };
+          // Hide it initially
+          this.el.setAttribute('scale', '0.001 0.001 0.001');
 
           const target = this.el.closest('[mindar-image-target]');
-
           if (target) {
-
+            // Replay animation every time target is found
             target.addEventListener('targetFound', () => {
-
-              this.el.setAttribute('animation', {
-
-                property: 'scale',
-
-                from: `0.001 0.001 0.001`,
-
-                to: `${this.baseScale.x} ${this.baseScale.y} ${this.baseScale.z}`,
-
-                dur: 1500,
-
-                easing: 'easeOutElastic',
-
-                delay: this.data.delay
-
-              });
-
+              this.el.removeAttribute('animation'); 
+              this.el.setAttribute('scale', '0.001 0.001 0.001'); // Force reset
+              
+              setTimeout(() => {
+                this.el.setAttribute('animation', {
+                  property: 'scale',
+                  from: `0.001 0.001 0.001`,
+                  to: `${this.baseScale.x} ${this.baseScale.y} ${this.baseScale.z}`,
+                  dur: 1500,
+                  easing: 'easeOutElastic',
+                  delay: this.data.delay
+                });
+              }, 50); // Slight delay ensures A-Frame registers the reset
             });
 
+            // Reset to invisible when target is lost
+            target.addEventListener('targetLost', () => {
+              this.el.removeAttribute('animation');
+              this.el.setAttribute('scale', '0.001 0.001 0.001');
+            });
           }
-
         }
-
       });
 
-
-
-      // 3. "POP-UP" ANIMATION (for Characters and Props)
-
+      // 3. "POP-UP" ANIMATION (Updated to Replay)
       AFRAME.registerComponent('pop-up', {
-
         schema: {
-
           delay: { type: 'number', default: 0 }
-
         },
-
         init: function () {
+          // Lie flat initially
+          this.el.setAttribute('rotation', '-90 0 0');
 
           const target = this.el.closest('[mindar-image-target]');
-
           if (target) {
-
+            // Replay animation every time target is found
             target.addEventListener('targetFound', () => {
-
-              this.el.setAttribute('animation', {
-
-                property: 'rotation',
-
-                from: `-90 0 0`,
-
-                to: `0 0 0`,
-
-                dur: 1500,
-
-                easing: 'easeOutElastic',
-
-                delay: this.data.delay
-
-              });
-
+              this.el.removeAttribute('animation');
+              this.el.setAttribute('rotation', '-90 0 0'); // Force reset
+              
+              setTimeout(() => {
+                this.el.setAttribute('animation', {
+                  property: 'rotation',
+                  from: `-90 0 0`,
+                  to: `0 0 0`,
+                  dur: 1500,
+                  easing: 'easeOutElastic',
+                  delay: this.data.delay
+                });
+              }, 50);
             });
 
+            // Reset to flat when target is lost
+            target.addEventListener('targetLost', () => {
+              this.el.removeAttribute('animation');
+              this.el.setAttribute('rotation', '-90 0 0');
+            });
           }
-
         }
-
       });
-
     </script>
-
   </head>
 
-
-
   <body style="margin: 0; overflow: hidden;">
-
     <a-scene mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-
       
-
       <a-assets>
-
         <img id="background-png" src="./Background.png" />
-
         <img id="ground-png" src="./Ground.png" />
-
         <img id="booth-png" src="./Booth.png" />
-
         <img id="robot-png" src="./Robot.png" />
-
         <img id="text-png" src="./Text.png" />
-
-        
-
         <img id="character-png" src="./Character.png" />
-
       </a-assets>
-
-
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-
-
       <a-entity mindar-image-target="targetIndex: 0">
-
         
-
-        <a-entity position="0 0 0.8" rotation="90 0 0">
-
+        <a-entity>
           
-
           <a-image scale-in="delay: 0" src="#background-png" position="0 -0.05 -0.5" height="1.3" width="1.6" material="transparent: true; alphaTest: 0.5"></a-image>
+          <a-image scale-in="delay: 400" src="#ground-png" position="0 -0.8 0" rotation="-90 0 0" height=".6" width="1" material="transparent: true; alphaTest: 0.5"></a-image>
 
-          <a-image scale-in="delay: 200" src="#ground-png" position="0 -0.8 0" rotation="-90 0 0" height=".6" width="1" material="transparent: true; alphaTest: 0.5"></a-image>
-
-
-
-          <a-entity pop-up="delay: 400" position="0 -0.8 -0.3">
-
+          <a-entity pop-up="delay: 800" position="0 -0.8 -0.3">
             <a-image src="#booth-png" position="0 0.30 0" height="1.1" width="1.5" material="transparent: true; alphaTest: 0.5"></a-image>
-
           </a-entity>
 
-
-
-          <a-entity pop-up="delay: 600" position="0 -0.8 0.0">
-
+          <a-entity pop-up="delay: 1200" position="0 -0.8 0.0">
             <a-image src="#character-png" position="0 0.38 0" height="0.8" width="0.5" material="transparent: true; alphaTest: 0.5"></a-image>
-
           </a-entity>
 
-
-
-          <a-entity pop-up="delay: 800" position="-0.5 -0.8 0.0">
-
+          <a-entity pop-up="delay: 1600" position="-0.5 -0.8 0.0">
             <a-image src="#robot-png" position="0 0.2 0" height="0.5" width="0.8" material="transparent: true; alphaTest: 0.5"></a-image>
-
           </a-entity>
 
-
-
-          <a-entity pop-up="delay: 1000" position="0 -0.8 0.35">
-
+          <a-entity pop-up="delay: 2000" position="0 -0.8 0.35">
             <a-image src="#text-png" position="0 0.25 0" height="0.1" width="1.2" material="transparent: true; alphaTest: 0.5"></a-image>
-
           </a-entity>
 
-
-
-        </a-entity> </a-entity>
-
+        </a-entity>
+      </a-entity>
     </a-scene>
-
   </body>
-
 </html>
